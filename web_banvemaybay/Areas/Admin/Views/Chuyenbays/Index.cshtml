@@ -1,0 +1,58 @@
+﻿@model IEnumerable<web_banvemaybay.Models.Chuyenbay>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Thống kê ghế ngồi</h1>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Bảng số liệu hạng vé   
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>
+                                Mã chuyến
+                            </th>
+                            <th>
+                                Số ghế phổ thông còn trống
+                            </th>
+                            <th>
+                                Số ghế thương gia còn trống
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IDchuyenbay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoThong)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ThuongGia)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Chi tiết", "DoanhThu", new { id = item.IDchuyenbay }, new { style = "background-color: #ffd700; color: black; padding: 5px 10px; text-decoration: none; border-radius: 5px;" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+   

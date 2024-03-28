@@ -1,0 +1,57 @@
+﻿@model web_banvemaybay.Models.Chuyenbay
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+<div class="p15">
+    <h2>Chi tiết</h2><br />
+    <h4 c>Chuyến bay</h4>
+    <hr />
+    <dl class="dl-horizontal p15">
+        <dt>
+            Mã chuyến : @Html.DisplayFor(model => model.IDchuyenbay)
+        </dt>
+        <dt>
+            Điểm đi : @Html.DisplayFor(model => model.Diadiemdi)
+        </dt>
+
+        <dt>
+            Điểm đến : @Html.DisplayFor(model => model.Diadiemden)
+        </dt>
+
+        <dt>
+            Ngày đi : @Html.DisplayFor(model => model.Ngaydi)
+        </dt>
+
+        <dt>
+            Ngày về : @Html.DisplayFor(model => model.Ngayve)
+        </dt>
+
+        <dt>
+            Hãng hàng không : @Html.DisplayFor(model => model.HangHK.TenHang)
+        </dt>
+
+        <dt>
+            Số vé Phổ thông đã bán : @Session["PTDaBan"]
+        </dt>
+
+        <dt>
+            Số vé Thương gia đã bán : @Session["TGDaBan"]
+        </dt>
+
+        <dt>
+            Tổng số vé đã bán : @Session["SoVeDaBan"]
+        </dt>
+
+        <dt>
+            Doanh thu : @String.Format("{0:0,0}", int.Parse(@Session["Tongdoanhthu"].ToString()))đ
+        </dt>
+
+
+    </dl>
+    <p class="p15">
+        @Html.ActionLink("Quay lại", "Index", null, new { style = "background-color: #0077cc; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;" })
+        </p>
+</div>
+

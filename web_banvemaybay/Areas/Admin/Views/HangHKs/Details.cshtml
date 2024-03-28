@@ -1,0 +1,30 @@
+﻿@model web_banvemaybay.Models.HangHK
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="p15">
+    <h2>Chi tiết</h2><br />
+    <h4>Hãng hàng không</h4>
+    <hr />
+    <dl class="dl-horizontal p15">
+        <dt>
+            Tên hãng: @Html.DisplayFor(model => model.TenHang)
+        </dt>
+
+        <dt>
+            Hình ảnh:<br /><img src="@Model.Hinhanh" style="width:20%;height:20%;" />
+        </dt>
+
+    </dl>
+    <p>
+    <p class="p15">
+        @Html.ActionLink("Sửa", "Edit", new { id = Model.IDhang}, new { style = "background-color: #0077cc; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;" }) |
+        @Html.ActionLink("Quay lại", "Index", null, new { style = "background-color: #0077cc; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;" })
+
+    </p>
+    </p>
+</div>
+

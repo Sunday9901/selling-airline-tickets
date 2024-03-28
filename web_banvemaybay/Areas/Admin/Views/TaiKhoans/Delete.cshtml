@@ -1,0 +1,46 @@
+﻿@model web_banvemaybay.Models.TaiKhoan
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+
+
+<div class="p15">
+    <h2>Xóa</h2> <br />
+    <h4>Tài khoản</h4>
+    <hr />
+    <dl class="dl-horizontal p15">
+        <dt>
+            Họ và tên: @Html.DisplayFor(model => model.HovaTen)
+        </dt>
+
+
+        <dt>
+            Email: @Html.DisplayFor(model => model.Email)
+        </dt>
+
+        <dt>
+            Số điện thoại: @Html.DisplayFor(model => model.SDT)
+        </dt>
+
+        <dt>
+            Chức vụ: @Html.DisplayFor(model => model.Chucvu.TenCV)
+        </dt>
+
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color p15">
+            <input type="submit" value="Xóa" class="btn btn-danger" style="background-color: red; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px; border: none;" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');" /> |
+            @Html.ActionLink("Quay lại", "Index", null, new { style = "background-color: #0077cc; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;" })
+        </div>
+
+
+    }
+</div>

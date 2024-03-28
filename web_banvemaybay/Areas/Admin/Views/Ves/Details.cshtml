@@ -1,0 +1,66 @@
+﻿@model web_banvemaybay.Models.Ve
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+
+
+<div class="p15">
+    <h2>Chi tiết</h2><br />
+    <h4>Vé</h4>
+    <hr />
+    <dl class="dl-horizontal p15">
+        <dt>
+            Tình trạng: @Html.DisplayFor(model => model.Tinhtrang)
+        </dt>
+        <dt>
+            Ngày đặt vé: @Html.DisplayFor(model => model.Ngaydatve)
+        </dt>
+
+        <dt>
+            Giá tiền: @Html.DisplayFor(model => model.Gia)đ
+        </dt>
+
+        <dt>
+            Tiền phạt: @Html.DisplayFor(model => model.Tienphat)
+        </dt>
+
+        <dt>
+            Số vé: @Html.DisplayFor(model => model.Sove)
+        </dt>
+
+        <dt>
+            Hoàn trả: @Html.DisplayFor(model => model.Hoangtra)
+        </dt>
+
+        <dt>
+            Địa điển đi: @Html.DisplayFor(model => model.Chuyenbay.Diadiemdi)
+        </dt>
+
+        <dt>
+            Địa điển đến: @Html.DisplayFor(model => model.Chuyenbay.Diadiemden)
+        </dt>
+
+        <dt>
+            Hạng vé: @Html.DisplayFor(model => model.Hangve.TenHangve)
+        </dt>
+
+        <dt>
+            Hành lý(Kg): @Html.DisplayFor(model => model.Hanhli.Kg)
+        </dt>
+
+        <dt>
+            Tên Hành khách: @Html.DisplayFor(model => model.HanhKhach.Tenhanhkhach)
+        </dt>
+
+
+    </dl>
+    <p class="p15">
+        @*@Html.ActionLink("Sửa", "Edit", new { id = Model.IDve }, new { style = "background-color: #0077cc; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;" }) |*@
+        @Html.ActionLink("Quay lại", "Index", null, new { style = "background-color: #0077cc; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;" })
+
+    </p>
+</div>
+

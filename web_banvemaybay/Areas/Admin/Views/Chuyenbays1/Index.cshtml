@@ -1,0 +1,93 @@
+﻿@model IEnumerable<web_banvemaybay.Models.Chuyenbay>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Thêm/ sửa xóa</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Chuyến bay</li>
+        </ol>
+        <p>
+            @Html.ActionLink("Thêm mới", "Create", null, new { style = "background-color: #0077cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;" })
+        </p>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Bảng số liệu chuyến bay
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>
+                                Địa điểm đi
+                            </th>
+                            <th>
+                                Địa điểm đến
+                            </th>
+                            <th>
+                                Ngày đi
+                            </th>
+                            <th>
+                                Ngày về
+                            </th>
+                            <th>
+                                Giá tiền
+                            </th>
+                            <th>
+                                Số vé phổ thông
+                            </th>
+                            <th>
+                                Số vé thương gia
+                            </th>
+                            <th>
+                                Tên hãng
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Diadiemdi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Diadiemden)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ngaydi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ngayve)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Giatien)đ
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoThong)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ThuongGia)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HangHK.TenHang)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Sửa", "Edit", new { id = item.IDchuyenbay }, new { style = "background-color: #0077cc; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;" }) |
+                                    @Html.ActionLink("Chi tiết", "Details", new { id = item.IDchuyenbay }, new { style = "background-color: #ffd700; color: black; padding: 5px 10px; text-decoration: none; border-radius: 5px;" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+

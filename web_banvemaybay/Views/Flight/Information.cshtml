@@ -1,0 +1,493 @@
+﻿@model web_banvemaybay.Models.Chuyenbay
+@{
+    ViewBag.Title = "NhapThongTin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage) || ViewBag.thongbao != null)
+{
+    <div id="thongbao">
+        <div class="thongbao">
+            <div class="thongbao-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="thongbao-body">
+                <p>Thông báo</p>
+                <p class="ndtb"> @ViewBag.ErrorMessage @ViewBag.thongbao</p>
+            </div>
+            <div class="thongbao-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div id="thongbao" style="display:none !important">
+        <div class="thongbao">
+            <div class="thongbao-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="thongbao-body">
+                <p>Thông báo</p>
+                <p class="ndtb"></p>
+
+            </div>
+            <div class="thongbao-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+    </div>
+}
+<form action="@Url.Action("tt", "Flight", new { id = "myForm" })" method="post">
+    <!-- Nội dung form tại đây -->
+    <div class="information">
+        <div class="information-left">
+            <div class="customer-info">
+                <div class="customer-info-heading">
+                    <i class="fa-solid fa-users"></i>
+                    Thông tin khách hàng
+                </div>
+                <div class="customer-info-body">
+                    <ul class="customer-i">
+                        @{
+                            int toFrom = Session["idFrom"] != null ? int.Parse(Session["idFrom"].ToString()) : 0;
+                            if (toFrom == 0)
+                            {
+                                <li class="li-50">
+                                    <p>Chọn hạng vé<sup>*</sup></p>
+                                    <select name="hangveid" id="hangveid" class="ci-baggage" required>
+                                        @{
+                                            int selectedValue = ViewBag.IdHangve;
+
+                                            if (selectedValue == 2) // Nếu số hạng vé thương gia hết, thiết lập mặc định là hạng phổ thông
+                                            {
+                                                <option value="2" selected>Hạng phổ thông</option>
+                                                <option value="1">Hạng thương gia</option>
+                                            }
+                                            else // Nếu không, thiết lập mặc định là hạng thương gia
+                                            {
+                                                <option value="1" selected>Hạng thương gia</option>
+                                                <option value="2">Hạng phổ thông</option>
+                                            }
+                                        }
+                                    </select>
+                                </li>
+                                <li class="li-50">
+                                    <p>Hành lý ký gửi <sup>*</sup></p>
+                                    <select name="hanhlyid" id="hanhlyid" class="ci-baggage">
+                                        @{
+                                            int hanhliid = ViewBag.idhanhli;
+                                            <option value="1" @(hanhliid == 1 ? "selected" : "")>none</option>
+                                            <option value="2" @(hanhliid == 2 ? "selected" : "")>10kg</option>
+                                            <option value="3" @(hanhliid == 3 ? "selected" : "")>20kg</option>
+                                            <option value="4" @(hanhliid == 4 ? "selected" : "")>30kg</option>
+                                        }
+                                    </select>
+                                </li>
+                            }
+                        }
+                        <li class="li-gt">
+                            <p>Giới tính <sup>*</sup></p>
+                            <select name="gioitinh" id="gioitinh" class="ci-gender">
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nử</option>
+                            </select>
+                        </li>
+                        <li>
+                            <p>Họ tên <sup>*</sup></p>
+                            <input type="text" name="name" placeholder="Nhập họ tên" required class="form-control">
+                        </li>
+                        <li>
+                            <p>CCCD <sup>*</sup></p>
+                            <input type="text" name="cmnd" placeholder="CCCD" required class="form-control" oninput="validateCCCD(this)">
+                            <div id="error-message" class="error-message"></div>
+                            <style>
+                                .error-message {
+                                    color: red;
+                                }
+                            </style>
+                        </li>
+                        <li>
+                            <p>Ngày sinh <sup>*</sup></p>
+                            <input type="date" name="birthday" id="birthday" required>
+                        </li>
+                        <li>
+                            <div>
+                                @{
+                                    web_banvemaybay.Models.web_banvemaybayEntities db = new web_banvemaybay.Models.web_banvemaybayEntities();
+                                }
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="note">
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i>Lưu ý về độ tuổi người lớn, trẻ em, trẻ sơ sinh</h3>
+                        <p><i class="fa-regular fa-hand-point-right"></i>Người lớn từ 12 tuổi trở lên.</p>
+                        <p><i class="fa-regular fa-hand-point-right"></i>Nếu trẻ em và em bé của bạn không sinh vào khoảng thời gian trên, vui lòng chọn ngày bay khác.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-info">
+                <div class="contact-info-heading">
+                    <i class="fa-solid fa-inbox"></i>
+                    Thông tin liên hệ
+                </div>
+                <div class="contact-info-body">
+                    <ul class="contact-i">
+                        <li>
+                            <p>Quý danh <sup>*</sup></p>
+                            <select name="gioitinhlh" id="gioitinhlh" class="ci-gender">
+                                <option value="1">Quý Ông</option>
+                                <option value="2">Quý Bà</option>
+                            </select>
+                        </li>
+                        <li>
+                            <p>Họ tên <sup>*</sup></p>
+                            <input type="text" name="namelh" placeholder="Họ tên" required class="form-control">
+                        </li>
+                        <li>
+                            <p>Điện thoại<sup>*</sup></p>
+                            <input type="text" name="sdtlh" placeholder="Điện thoại" required class="form-control">
+                        </li>
+                        <li>
+                            <p>Email <sup>*</sup></p>
+                            <input type="email" name="emaillh" placeholder="Email" required class="form-control">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="payment">
+                <div class="payment-heading">
+                    <i class="fa-solid fa-money-bill"></i>
+                    Phương thức thanh toán
+                </div>
+                <div class="payment-body">
+                    <ul class="payment-i">
+                        <li>
+                            <input type="radio" name="payment" id="payment2" value="Thanh toán tại công ty" checked>
+                            <label for="payment2">Thanh toán tại công ty</label>
+                        </li>
+                        <div class="payment2" style="display:block">
+                            Địa chỉ: 10/80C XL Hà Nội, Phường Tân Phú, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam
+                        </div>
+                        @*<li>
+                                <input type="radio" name="payment" id="payment1" value="payment1">
+                                <label for="payment1">Thanh toán momo</label>
+                            </li>*@
+                        <li>
+                            <input type="radio" name="payment" id="payment3" value="payment3">
+                            <label for="payment3">Thanh toán vnpay</label>
+                        </li>
+                    </ul>
+                    <input type="submit" value="Thanh toán" class="btn btn-reservations ttmacdinh" />
+                    @*<a class="btn btn-reservations ttmomo" href="@Url.Action("PaymentMomo","Flight")">Thanh toán</a>
+                        <a class="btn btn-reservations ttvnpay" href="@Url.Action("PaymentVnpay","Flight")">Thanh toán</a>*@
+                </div>
+            </div>
+        </div>
+        @{
+            if (Session["idTo"] != null && Session["idFrom"] != null)
+            {
+                double giatien = Session["giatien"] != null ? double.Parse(Session["giatien"].ToString()) : 0;
+                double giave = Session["giave"] != null ? double.Parse(Session["giave"].ToString()) : 0;
+                int idto = Session["toIdcu"] != null ? int.Parse(Session["toIdcu"].ToString()) : 1;
+                var giato = db.Hanhli.Where(c => c.IDhanhli == idto).FirstOrDefault();
+                int idfrom = Session["fromIdcu"] != null ? int.Parse(Session["fromIdcu"].ToString()) : 1;
+                var giafrom = db.Hanhli.Where(c => c.IDhanhli == idfrom).FirstOrDefault();
+                double idhv = Session["hangvekh"] != null ? double.Parse(Session["hangvekh"].ToString()) : 2;
+                var giahv = db.Hangve.Where(c => c.IDhangve == idhv).FirstOrDefault();
+                int cd = int.Parse(Session["idTo"].ToString());
+                var chuyendi = db.Chuyenbay.Where(c => c.IDchuyenbay == cd).FirstOrDefault();
+                int cv = int.Parse(Session["idFrom"].ToString());
+                var chuyenve = db.Chuyenbay.Where(c => c.IDchuyenbay == cv).FirstOrDefault();
+                double tong = giatien + (chuyendi.Giatien / 100 * 10) + (chuyenve.Giatien / 100 * 10) + 140000;
+                Session["giatien"] = tong;
+                if (toFrom > 0)
+                {
+                    <div class="information-right">
+                        <div class="information-r-heading">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            Chuyến bay của bạn
+                        </div>
+                        <div class="information-r-body">
+                            <ul class="information-goto">
+                                <b>Chuyến bay khứ hồi</b>
+                                <li><p>Đi từ <span class="go">@Session["to"]</span></p><p>Đến <span class="to">@Session["from"]</span></p></li>
+                                <li>
+                                    <span class="go">@Session["dateto"]</span>
+                                    <span class="go">@Session["datefrom"]</span>
+                                </li>
+                            </ul>
+                            <ul class="information-money">
+                                <b>Giá vé tạm tính</b>
+                                <li>Giá vé<span>@String.Format("{0:0,0}", giave)đ</span></li>
+                                <li>Thuế<span>@String.Format("{0:0,0}", (chuyendi.Giatien / 100 * 10) + (chuyenve.Giatien / 100 * 10))đ</span></li>
+                                <li>Phí<span>@String.Format("{0:0,0}", 140000)đ</span></li>
+                                <li>Giá hành lý<span>@String.Format("{0:0,0}", giato.Giatien + giafrom.Giatien)đ</span></li>
+                                <li>Giá hạng vé<span>@String.Format("{0:0,0}", (giahv.Gia * 2))đ</span></li>
+                                <li class="li-money-last">Tổng tiền<span>@String.Format("{0:0,0}", tong)đ</span></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="information-right">
+                    <div class="information-r-heading">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Chuyến bay của bạn
+                    </div>
+                    <div class="information-r-body">
+                        <ul class="information-goto">
+                            @if (Model.Ngayve != null)
+                            {
+                                <b>Chuyến bay khứ hồi</b>
+                            }
+                            else
+                            {
+                                <b>Chuyến bay một chiều</b>
+                            }
+                            <li><p>Đi từ <span class="go">@Model.Diadiemdi</span></p><p>Đến <span class="to">@Model.Diadiemden</span></p></li>
+                            <li>
+                                <span class="go">@Model.Ngaydi</span>
+                                @if (Model.Ngayve != null)
+                                {
+                                    <span class="to">@Model.Ngayve</span>
+                                }
+                            </li>
+                        </ul>
+                        <ul class="information-money">
+                            <b>Giá vé tạm tính</b>
+                            <li>Giá vé<span>@String.Format("{0:0,0}", @Model.Giatien)đ</span></li>
+                            <li>Thuế<span>@String.Format("{0:0,0}", (@Model.Giatien / 100 * 10))đ</span></li>
+                            <li>Phí<span>@String.Format("{0:0,0}", 70000)đ</span></li>
+                            <li>Giá hành lý<span>@String.Format("{0:0,0}", @Session["giahanhly"])đ</span></li>
+                            <li>Giá hạng vé<span>@String.Format("{0:0,0}", @Session["giaHangghe"])đ</span></li>
+                            <li class="li-money-last">Tổng tiền<span>@String.Format("{0:0,0}", @Session["giatien" + Model.IDchuyenbay])đ</span></li>
+                            <input type="hidden" name="idChuyenBay" value="@Model.IDchuyenbay" />
+                            <input type="hidden" name="idcu" value="@Session["idcu"]" />
+                            <input type="hidden" name="idHangve" value="@Session["idHangve"]" />
+                        </ul>
+                    </div>
+
+                </div>
+            }
+
+
+        }
+    </div>
+</form>
+@{
+    if (toFrom == 0)
+    {
+        <li style="display:none">
+            @using (Html.BeginForm("Information", "Flight", FormMethod.Post, new { id = "flightForm" }))
+            {
+                var hanhli = db.Hanhli.ToList();
+
+                <select name="idhanhli" id="searchBySelect">
+                    @foreach (var item in hanhli)
+                    {
+                        <option value="@item.IDhanhli" selected>@item.Kg</option>
+                    }
+                </select>
+                <input type="hidden" name="giatien" value="@Session["giatien"+Model.IDchuyenbay]" />
+                <input type="hidden" name="idChuyenBay" value="@Model.IDchuyenbay" />
+                <input type="hidden" name="idcu" value="@Session["idcu"]" />
+                <input type="hidden" name="giatienidcu" value="@Session["giatien" + Model.IDchuyenbay + Session["idhanhli"]]" />
+                @* <input type="hidden" name="idhanhlicu" value="@Session["idhanhli"+Model.IDchuyenbay]" />*@
+            }
+            @using (Html.BeginForm("Sohangve", "Flight", FormMethod.Post, new { id = "Hangve" }))
+            {
+                var hangve = db.Hangve.ToList();
+                <div id="form2">
+                    <!-- Nội dung form tại đây -->
+                    <select name="idHangve" id="idHangve">
+                        @foreach (var item in hangve)
+                        {
+                            <option value="@item.IDhangve">@item.TenHangve</option>
+                        }
+                    </select>
+                </div>
+                <input type="hidden" name="giatien" value="@Session["giatien"+Model.IDchuyenbay]" />
+                <input type="hidden" name="idChuyenBay" value="@Model.IDchuyenbay" />
+                <input type="hidden" name="idHangvecu" value="@Session["idHangvecu"]" />
+                <input type="hidden" name="idHangve" value="@Session["idHangve"]" />
+                <input type="hidden" name="giatien" value="@Session["giatien"+Model.IDchuyenbay]" />
+                @* <input type="hidden" name="idhanhlicu" value="@Session["idhanhli"+Model.IDchuyenbay]" />*@
+            }
+        </li>
+    }
+}
+<div style="padding: 170px 0"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy giá trị đã lưu trong localStorage (nếu có) và gán cho các trường dữ liệu
+        var inputElements = document.querySelectorAll('input[name="name"], input[name="namelh"], input[name="sdtlh"], input[name="emaillh"],input[name="cmnd"]');
+        var selectElements = document.querySelectorAll('select[name="gioitinh"], select[name="gioitinhlh"]');
+
+        for (var i = 0; i < inputElements.length; i++) {
+            var element = inputElements[i];
+            var savedValue = sessionStorage.getItem(element.name);
+            if (savedValue) {
+                element.value = savedValue;
+            }
+            element.addEventListener('input', function () {
+                sessionStorage.setItem(this.name, this.value);
+            });
+        }
+
+        for (var i = 0; i < selectElements.length; i++) {
+            var element = selectElements[i];
+            var savedValue = localStorage.getItem(element.name);
+            if (savedValue) {
+                element.value = savedValue;
+            }
+            element.addEventListener('change', function () {
+                sessionStorage.setItem(this.name, this.value);
+            });
+        }
+
+        // Đối với trường dữ liệu input type="date"
+        var inputElementBirthday = document.querySelector('input[name="birthday"]');
+        var savedBirthday = sessionStorage.getItem('savedBirthday');
+        if (savedBirthday) {
+            inputElementBirthday.value = savedBirthday;
+        }
+        inputElementBirthday.addEventListener('change', function () {
+            sessionStorage.setItem('savedBirthday', this.value);
+        });
+
+    });
+
+</script>
+@*<script>
+        // Lắng nghe sự kiện khi giá trị của select thay đổi
+        document.getElementById('hanhlyid').addEventListener('change', function () {
+            // Lấy giá trị được chọn từ select
+            var selectedValue = this.value;
+            sessionStorage.setItem('selectedHanhLy', selectedValue);
+        });
+
+        // Kiểm tra xem có giá trị đã lưu trong sessionStorage hay không
+        var storedValue = sessionStorage.getItem('selectedHanhLy');
+
+        if (storedValue) {
+            // Nếu có giá trị trong sessionStorage, thiết lập giá trị được lưu lên select
+            document.getElementById('hanhlyid').value = storedValue;
+        }
+    </script>
+    <script>
+        // Lắng nghe sự kiện khi giá trị của select thay đổi
+        document.getElementById('hangveid').addEventListener('change', function () {
+            // Lấy giá trị được chọn từ select
+            var selectedValue = this.value;
+            // Lưu giá trị vào sessionStorage
+            sessionStorage.setItem('selectedHangVe', selectedValue);
+        });
+
+        // Kiểm tra xem có giá trị đã lưu trong sessionStorage hay không
+        var storedValue = sessionStorage.getItem('selectedHangVe');
+
+        if (storedValue) {
+            // Nếu có giá trị trong sessionStorage, thiết lập giá trị được lưu lên select
+            document.getElementById('hangveid').value = storedValue;
+        }
+    </script>*@
+
+<script>
+    const thongBao = document.querySelector('#thongbao')
+    const tbClose = document.querySelector('.thongbao-close')
+    const closeNemble = document.querySelector('.information')
+    closeNemble.addEventListener('click', function () {
+        document.querySelector("#thongbao").style.display = "none"
+    })
+    tbClose.addEventListener('click', function () {
+        document.querySelector("#thongbao").style.display = "none"
+    })
+    thongBao.addEventListener('click', function (event) {
+        event.stopPropagation()
+    })
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectElementHanhLyId = document.getElementById('hanhlyid');
+        var selectElement = document.getElementById('searchBySelect');
+        selectElementHanhLyId.addEventListener('change', function () {
+            selectElementHanhLyId.value = this.value;
+            selectElement.value = this.value;
+            localStorage.setItem('selectedOption', this.value);
+            document.getElementById('flightForm').submit();
+        });
+        var selectedOption = localStorage.getItem('selectedOption');
+        if (selectedOption) {
+            selectElement.value = selectedOption;
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectElementHangveId = document.getElementById('hangveid');
+        var selectElement2 = document.getElementById('idHangve');
+        selectElementHangveId.addEventListener('change', function () {
+            selectElementHangveId.value = this.value;
+            selectElement2.value = this.value;
+            localStorage.setItem('selectedOption2', this.value);
+            document.getElementById('Hangve').submit();
+        });
+
+        var selectedOption = localStorage.getItem('selectedOption2');
+        if (selectedOption) {
+            selectElement.value = selectedOption;
+        }
+    });
+    //document.getElementById('invoice').onclick = function (e) {
+    //    if (this.checked) {
+    //        document.querySelector(".invoice-in").style.display = "block"
+    //    }
+    //    else {
+    //        document.querySelector(".invoice-in").style.display = "none"
+    //    }
+    //}
+    //document.getElementById('payment1').onclick = function (e) {
+    //    if (this.checked) {
+    //        document.querySelector(".payment2").style.display = "none"
+    //        document.querySelector(".ttmomo").style.display = "block"
+    //        document.querySelector(".ttvnpay").style.display = "none"
+    //    }
+    //}
+    document.getElementById('payment2').onclick = function (e) {
+        if (this.checked) {
+            document.querySelector(".payment2").style.display = "block"
+            document.querySelector(".ttmomo").style.display = "none"
+            document.querySelector(".ttvnpay").style.display = "none"
+        }
+    }
+    document.getElementById('payment3').onclick = function (e) {
+        if (this.checked) {
+            document.querySelector(".payment2").style.display = "none"
+            document.querySelector(".ttmomo").style.display = "none"
+            document.querySelector(".ttvnpay").style.display = "block"
+        }
+    }
+</script>
+<script>
+    function validateCCCD(input) {
+        // Loại bỏ các ký tự không phải là số
+        let value = input.value.replace(/\D/g, '');
+
+        // Giới hạn chiều dài của chuỗi nhập là 12 ký tự
+        value = value.slice(0, 12);
+
+        // Kiểm tra nếu có chứa các giá trị 'a', 'b', 'c', 'd' thì loại bỏ
+        value = value.replace(/[abcd]/gi, '');
+
+        // Cập nhật giá trị trong trường nhập liệu
+        input.value = value;
+
+        // Hiển thị thông báo lỗi nếu không đủ 12 số
+        const errorMessage = document.getElementById('error-message');
+        if (value.length !== 12) {
+            errorMessage.textContent = 'CCCD phải có đủ 12 số.';
+        } else {
+            errorMessage.textContent = ''; // Xóa thông báo lỗi nếu hợp lệ
+        }
+    }
+</script>
